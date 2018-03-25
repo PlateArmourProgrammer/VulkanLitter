@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{c1c23ba1-ee58-4ccf-b651-e1cf84f17567}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\VulkanUtils">
+      <UniqueIdentifier>{9f381e07-e701-4892-adf5-c2e70be24578}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Base">
+      <UniqueIdentifier>{b352a63d-7824-4347-8392-18b87ca37fa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\File">
+      <UniqueIdentifier>{3095afa1-7aa3-4e97-90c8-1a02ef1c6c64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\VulkanUtils\RenderCommand">
+      <UniqueIdentifier>{1b9a8eb1-a335-4137-bc39-92204f9a7a1e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="VulkanUtils\VulkanApplication.cpp">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Base\BaseObject.cpp">
+      <Filter>Source\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="VulkanUtils\VulkanInstance.cpp">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="VulkanUtils\VulkanPhysicalDevice.cpp">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="VulkanUtils\VulkanImageViewPool.cpp">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="VulkanUtils\VulkanPipeline.cpp">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="File\File.cpp">
+      <Filter>Source\File</Filter>
+    </ClCompile>
+    <ClCompile Include="VulkanUtils\VulkanFramebufferPool.cpp">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="VulkanUtils\VulkanLogicalDevice.cpp">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="VulkanUtils\VulkanSurface.cpp">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="VulkanUtils\VulkanRenderPass.cpp">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="VulkanUtils\VulkanCommandBuffers.cpp">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="VulkanUtils\VulkanCommandPool.cpp">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="VulkanUtils\VulkanDepthResource.cpp">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="VulkanUtils\VulkanSingleTimeCommand.cpp">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="VulkanUtils\VulkanSwapChain.cpp">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="VulkanUtils\VulkanImageView.cpp">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="VulkanUtils\VulkanDescriptorSetLayout.cpp">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="VulkanUtils\RenderCommand\TextureRenderCmd.cpp">
+      <Filter>Source\VulkanUtils\RenderCommand</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="VulkanUtils\VulkanApplication.h">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="VulkanUtils\VulkanHeader.h">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="StdC.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="VulkanUtils\VulkanStructs.h">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h" />
+    <ClInclude Include="Base\BaseObject.h">
+      <Filter>Source\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="VulkanUtils\VulkanInstance.h">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="VulkanUtils\VulkanPhysicalDevice.h">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="VulkanUtils\VulkanLogicalDevice.h">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="VulkanUtils\VulkanSurface.h">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="VulkanUtils\VulkanImageViewPool.h">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="VulkanUtils\VulkanPipeline.h">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="File\File.h">
+      <Filter>Source\File</Filter>
+    </ClInclude>
+    <ClInclude Include="VulkanUtils\VulkanFramebufferPool.h">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="VulkanUtils\VulkanRenderPass.h">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="VulkanUtils\VulkanCommandPool.h">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="VulkanUtils\VulkanCommandBuffers.h">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="VulkanUtils\VulkanDepthResource.h">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="VulkanUtils\VulkanSingleTimeCommand.h">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="VulkanUtils\VulkanSwapChain.h">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="VulkanUtils\VulkanImageView.h">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="VulkanUtils\VulkanDescriptorSetLayout.h">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="VulkanUtils\RenderCommand\TextureRenderCmd.h">
+      <Filter>Source\VulkanUtils\RenderCommand</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
