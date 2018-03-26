@@ -40,9 +40,6 @@ private:
 	void createDescriptorPool();
 	void createDescriptorSet();
 	void createSemaphores();
-	void transitionImageLayout(vk::Image image, vk::Format format, vk::ImageLayout oldLayout, vk::ImageLayout newLayout);
-	bool hasStencilComponent(vk::Format format);
-	void copyBuffer(vk::Buffer srcBuffer, vk::Buffer dstBuffer, vk::DeviceSize size);
 	static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType,
 		uint64_t obj, size_t location, int32_t code, const char* layerPrefix, const char* msg, void* userData);
 
