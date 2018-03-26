@@ -14,7 +14,7 @@ namespace litter {
 		~VulkanCamera();
 
 		void setSize(uint32_t width, uint32_t height);
-		void update(float rotate);
+		void update(float offset);
 		vk::DescriptorBufferInfo* getBufferInfo();
 
 	private:
@@ -23,6 +23,7 @@ namespace litter {
 		vk::DescriptorBufferInfo _bufferInfo;
 		uint32_t _width;
 		uint32_t _height;
+		float _x;
 
 		VulkanLogicalDevice* _logicalDevice;
 	};

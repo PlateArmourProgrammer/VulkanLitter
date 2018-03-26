@@ -45,7 +45,7 @@ private:
 
 	void mainLoop();
 	void drawFrame();
-	void updateUniformBuffer();
+	void updateUniformBuffer(float offsetX);
 	void recreateSwapChain();
 
 private:

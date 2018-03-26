@@ -89,6 +89,8 @@ void VulkanApplication::mainLoop()
 	while (stillRunning)
 	{
 		SDL_Event event;
+		float offsetX = 0;
+
 		while (SDL_PollEvent(&event))
 		{
 			switch (event.type)
@@ -106,27 +108,39 @@ void VulkanApplication::mainLoop()
 				stillRunning = false;
 				break;
 
+			case SDL_KEYDOWN:
+			{
+				SDL_Keycode code = event.key.keysym.sym;
+				if (code == SDLK_LEFT) {
+					offsetX = -0.1f;
+				}
+				else if (code == SDLK_RIGHT) {
+					offsetX = 0.1f;
+				}
+				break;
+			}
+
 			default:
-				updateUniformBuffer();
-				drawFrame();
 				break;
 			}
 		}
 
+		updateUniformBuffer(offsetX);
+		drawFrame();
 		SDL_Delay(10);
 	}
 
 	_logicalDevice->getObject()->waitIdle();
 }
 
-void VulkanApplication::updateUniformBuffer()
+void VulkanApplication::updateUniformBuffer(float offsetX)
 {
 	static auto startTime = std::chrono::high_resolution_clock::now();
 	auto currentTime = std::chrono::high_resolution_clock::now();
 	float time = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - startTime).count() / 1000.0f;
 
 	_camera->setSize(_swapChain->getExtentWidth(), _swapChain->getExtentHeight());
-	_camera->update(time);
+	_camera->update(offsetX * time);
 }
 
 void VulkanApplication::drawFrame() {

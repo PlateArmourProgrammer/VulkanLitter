@@ -13,6 +13,8 @@ namespace litter {
 	VulkanCamera::VulkanCamera(VulkanLogicalDevice* logicalDevice, VulkanPhysicalDevice* physicalDevice) {
 		_logicalDevice = logicalDevice;
 
+		_x = 0.0f;
+
 		vk::DeviceSize bufferSize = sizeof(UniformBufferObject);
 
 		vk::BufferCreateInfo bufferInfo = vk::BufferCreateInfo()
@@ -71,10 +73,12 @@ namespace litter {
 		_height = height;
 	}
 
-	void VulkanCamera::update(float rotate) {
+	void VulkanCamera::update(float offset) {
+		_x += offset;
+
 		UniformBufferObject ubo = {};
-		ubo.model = glm::rotate(glm::mat4(), rotate * glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-		ubo.view = glm::lookAt(glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		ubo.model = glm::rotate(glm::mat4(), 0.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+		ubo.view = glm::lookAt(glm::vec3(_x, 0.0f, 2.0f), glm::vec3(_x, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		ubo.proj = glm::perspective(glm::radians(45.0f), _width / (float)_height, 0.1f, 10.0f);
 		ubo.proj[1][1] *= -1;
 
