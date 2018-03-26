@@ -161,6 +161,7 @@
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="VulkanUtils\RenderCommand\TextureRenderCmd.cpp" />
     <ClCompile Include="VulkanUtils\VulkanApplication.cpp" />
+    <ClCompile Include="VulkanUtils\VulkanCamera.cpp" />
     <ClCompile Include="VulkanUtils\VulkanDescriptorSetLayout.cpp" />
     <ClCompile Include="VulkanUtils\VulkanImageView.cpp" />
     <ClCompile Include="VulkanUtils\VulkanSingleTimeCommand.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="StdC.h" />
     <ClInclude Include="VulkanUtils\RenderCommand\TextureRenderCmd.h" />
     <ClInclude Include="VulkanUtils\VulkanApplication.h" />
+    <ClInclude Include="VulkanUtils\VulkanCamera.h" />
     <ClInclude Include="VulkanUtils\VulkanCommandBuffers.h" />
     <ClInclude Include="VulkanUtils\VulkanCommandPool.h" />
     <ClInclude Include="VulkanUtils\VulkanDepthResource.h" />

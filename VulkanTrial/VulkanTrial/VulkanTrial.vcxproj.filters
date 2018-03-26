@@ -83,6 +83,9 @@
     <ClCompile Include="VulkanUtils\RenderCommand\TextureRenderCmd.cpp">
       <Filter>Source\VulkanUtils\RenderCommand</Filter>
     </ClCompile>
+    <ClCompile Include="VulkanUtils\VulkanCamera.cpp">
+      <Filter>Source\VulkanUtils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VulkanUtils\VulkanApplication.h">
@@ -151,6 +154,9 @@
     </ClInclude>
     <ClInclude Include="VulkanUtils\RenderCommand\TextureRenderCmd.h">
       <Filter>Source\VulkanUtils\RenderCommand</Filter>
+    </ClInclude>
+    <ClInclude Include="VulkanUtils\VulkanCamera.h">
+      <Filter>Source\VulkanUtils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

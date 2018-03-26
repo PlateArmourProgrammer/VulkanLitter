@@ -62,8 +62,7 @@ void VulkanApplication::cleanup()
 	device->destroyDescriptorPool(_descriptorPool, nullptr);
 	delete _descriptorSetLayout;
 
-	device->destroyBuffer(_uniformBuffer, nullptr);
-	device->freeMemory(_uniformBufferMemory, nullptr);
+	delete _camera;
 
 	delete _textureRenderCmd;
 
@@ -126,16 +125,8 @@ void VulkanApplication::updateUniformBuffer()
 	auto currentTime = std::chrono::high_resolution_clock::now();
 	float time = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - startTime).count() / 1000.0f;
 
-	UniformBufferObject ubo = {};
-	ubo.model = glm::rotate(glm::mat4(), time * glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-	ubo.view = glm::lookAt(glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-	ubo.proj = glm::perspective(glm::radians(45.0f), _swapChain->getExtentWidth() / (float)_swapChain->getExtentHeight(), 0.1f, 10.0f);
-	ubo.proj[1][1] *= -1;
-
-	void* data;
-	_logicalDevice->getObject()->mapMemory(_uniformBufferMemory, 0, sizeof(ubo), vk::MemoryMapFlagBits(), &data);
-	memcpy(data, &ubo, sizeof(ubo));
-	_logicalDevice->getObject()->unmapMemory(_uniformBufferMemory);
+	_camera->setSize(_swapChain->getExtentWidth(), _swapChain->getExtentHeight());
+	_camera->update(time);
 }
 
 void VulkanApplication::drawFrame() {
@@ -230,7 +221,7 @@ bool VulkanApplication::initVulkan()
 	_framebufferPool = new litter::VulkanFramebufferPool(_logicalDevice, _imageViewPool, _depthResource->getImageView(), _swapChain, _renderPass);
 	_imageView = new litter::VulkanImageView(_physicalDevice, _logicalDevice, _commandPool);
 	_textureRenderCmd = new litter::TextureRenderCmd(_physicalDevice, _logicalDevice, _commandPool);
-	createUniformBuffer();
+	_camera = new litter::VulkanCamera(_logicalDevice, _physicalDevice);
 	createDescriptorPool();
 	createDescriptorSet();
 	_commandBuffers = new litter::VulkanCommandBuffers(_logicalDevice, _commandPool,
@@ -276,14 +267,6 @@ void VulkanApplication::recreateSwapChain()
 	_commandBuffers->init(_framebufferPool, _renderPass, _pipeline, _swapChain, &_descriptorSet, _textureRenderCmd);
 }
 
-void VulkanApplication::createUniformBuffer()
-{
-	vk::DeviceSize bufferSize = sizeof(UniformBufferObject);
-	createBuffer(bufferSize, vk::BufferUsageFlagBits::eUniformBuffer,
-		vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent,
-		_uniformBuffer, _uniformBufferMemory);
-}
-
 void VulkanApplication::createDescriptorPool()
 {
 	std::array<vk::DescriptorPoolSize, 2> poolSizes = {
@@ -320,11 +303,6 @@ void VulkanApplication::createDescriptorSet()
 		throw std::runtime_error("failed to allocate descriptor set!");
 	}
 
-	vk::DescriptorBufferInfo bufferInfo = vk::DescriptorBufferInfo()
-		.setBuffer(_uniformBuffer)
-		.setOffset(0)
-		.setRange(sizeof(UniformBufferObject));
-
 	vk::DescriptorImageInfo imageInfo = vk::DescriptorImageInfo()
 		.setImageLayout(vk::ImageLayout::eShaderReadOnlyOptimal)
 		.setImageView(*_imageView->getObject())
@@ -337,7 +315,7 @@ void VulkanApplication::createDescriptorSet()
 			.setDstArrayElement(0)
 			.setDescriptorType(vk::DescriptorType::eUniformBuffer)
 			.setDescriptorCount(1)
-			.setPBufferInfo(&bufferInfo)
+			.setPBufferInfo(_camera->getBufferInfo())
 			.setPImageInfo(nullptr)
 			.setPTexelBufferView(nullptr),
 		vk::WriteDescriptorSet()
@@ -435,33 +413,6 @@ bool VulkanApplication::hasStencilComponent(vk::Format format)
 	return format == vk::Format::eD32SfloatS8Uint || format == vk::Format::eD24UnormS8Uint;
 }
 
-void VulkanApplication::createBuffer(vk::DeviceSize size, vk::BufferUsageFlags usage, vk::MemoryPropertyFlags properties, vk::Buffer& buffer, vk::DeviceMemory& bufferMemory)
-{
-	vk::BufferCreateInfo bufferInfo = vk::BufferCreateInfo()
-		.setSize(size)
-		.setUsage(usage)
-		.setSharingMode(vk::SharingMode::eExclusive);
-
-	if (_logicalDevice->getObject()->createBuffer(&bufferInfo, nullptr, &buffer) != vk::Result::eSuccess)
-	{
-		throw std::runtime_error("failed to create vertex buffer!");
-	}
-
-	vk::MemoryRequirements memRequirements;
-	_logicalDevice->getObject()->getBufferMemoryRequirements(buffer, &memRequirements);
-
-	vk::MemoryAllocateInfo allocInfo = vk::MemoryAllocateInfo()
-		.setAllocationSize(memRequirements.size)
-		.setMemoryTypeIndex(findMemoryType(memRequirements.memoryTypeBits, properties));
-
-	if (_logicalDevice->getObject()->allocateMemory(&allocInfo, nullptr, &bufferMemory) != vk::Result::eSuccess)
-	{
-		throw std::runtime_error("failed to allocate vertex buffer memory!");
-	}
-
-	_logicalDevice->getObject()->bindBufferMemory(buffer, bufferMemory, 0);
-}
-
 void VulkanApplication::copyBuffer(vk::Buffer srcBuffer, vk::Buffer dstBuffer, vk::DeviceSize size)
 {
 	litter::VulkanSingleTimeCommand singleCmd(_logicalDevice, _commandPool);
@@ -472,22 +423,6 @@ void VulkanApplication::copyBuffer(vk::Buffer srcBuffer, vk::Buffer dstBuffer, v
 		.setSize(size);
 	copyRegion.size = size;
 	singleCmd.getObject()->copyBuffer(srcBuffer, dstBuffer, 1, &copyRegion);
-}
-
-uint32_t VulkanApplication::findMemoryType(uint32_t typeFilter, vk::MemoryPropertyFlags properties)
-{
-	vk::PhysicalDeviceMemoryProperties memProperties;
-	_physicalDevice->getObject()->getMemoryProperties(&memProperties);
-
-	for (uint32_t i = 0; i < memProperties.memoryTypeCount; i++)
-	{
-		if ((typeFilter & (1 << i)) && (memProperties.memoryTypes[i].propertyFlags & properties) == properties)
-		{
-			return i;
-		}
-	}
-
-	throw std::runtime_error("failed to find suitable memory type!");
 }
 
 VKAPI_ATTR VkBool32 VKAPI_CALL VulkanApplication::debugCallback(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType, uint64_t obj, size_t location, int32_t code, const char* layerPrefix, const char* msg, void* userData) {

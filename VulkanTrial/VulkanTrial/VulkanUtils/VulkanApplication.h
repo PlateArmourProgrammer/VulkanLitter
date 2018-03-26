@@ -21,6 +21,7 @@
 #include "VulkanImageView.h"
 #include "VulkanDescriptorSetLayout.h"
 #include "RenderCommand/TextureRenderCmd.h"
+#include "VulkanCamera.h"
 
 class VulkanApplication
 {
@@ -36,15 +37,12 @@ private:
 	bool initWindow();
 	bool initVulkan();
 	void setupDebugCallback();
-	void createUniformBuffer();
 	void createDescriptorPool();
 	void createDescriptorSet();
 	void createSemaphores();
 	void transitionImageLayout(vk::Image image, vk::Format format, vk::ImageLayout oldLayout, vk::ImageLayout newLayout);
 	bool hasStencilComponent(vk::Format format);
-	void createBuffer(vk::DeviceSize size, vk::BufferUsageFlags usage, vk::MemoryPropertyFlags properties, vk::Buffer& buffer, vk::DeviceMemory& bufferMemory);
 	void copyBuffer(vk::Buffer srcBuffer, vk::Buffer dstBuffer, vk::DeviceSize size);
-	uint32_t findMemoryType(uint32_t typeFilter, vk::MemoryPropertyFlags properties);
 	static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objType,
 		uint64_t obj, size_t location, int32_t code, const char* layerPrefix, const char* msg, void* userData);
 
@@ -57,9 +55,6 @@ private:
 	SDL_Window* _window;
 
 	vk::DebugReportCallbackEXT _callback;
-
-	vk::Buffer _uniformBuffer;
-	vk::DeviceMemory _uniformBufferMemory;
 
 	vk::Semaphore _imageAvailableSemaphore;
 	vk::Semaphore _renderFinishedSemaphore;
@@ -86,6 +81,7 @@ private:
 	litter::VulkanImageView* _imageView;
 	litter::VulkanDescriptorSetLayout* _descriptorSetLayout;
 	litter::TextureRenderCmd* _textureRenderCmd;
+	litter::VulkanCamera* _camera;
 };
 
 #endif // !VULKAN_APPLICATION_H_
